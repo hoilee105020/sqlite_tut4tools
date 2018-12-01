@@ -26,9 +26,10 @@ c.execute("""CREATE TABLE exhibits (
 #check sqlite data type online
 
 #insert curators
-c.execute("INSERT INTO curators VALUES (5,'Rebecca Votea','Esteemed naturalist')")
 c.execute("INSERT INTO curators VALUES (11,'Simon Strauss','Space man')")
 c.execute("INSERT INTO curators VALUES (71,'Rick Sanchez','Grandfather')")
+c.execute("INSERT INTO curators VALUES (5,'Rebecca Votea','Esteemed naturalist')")
+
 
 #insert exhibits
 c.execute("INSERT INTO exhibits VALUES (3,'Free The Fishes',2018-01-01,2018-06-30,5)")
@@ -37,18 +38,28 @@ c.execute("INSERT INTO exhibits VALUES (23,'Bears Bears Bears',2018-02-14,2018-0
 c.execute("INSERT INTO exhibits VALUES (46,'Humans? Aliens?',2019-03-14,2019-10-21,11)")
 
 #select statement i.e. read
-c.execute("SELECT * FROM exhibits")
-# row=c.fetchone() #get next row from the result and only return that row
-# print(type(row))
-# print(row[1])
+# c.execute("SELECT * FROM exhibits")
+# rows=c.fetchall() #get all remaining rows in a list
+# print(rows[0])
+# print(rows[1])
+# print(rows[2])
+# print(rows[3])
 
-#c.fetchmany(5) #parameter determine how many row to be read
+#read curators and sort by descend id
+#Syntax: SELECT * FROM table_name ORDER BY column_name ASC|DESC
+# c.execute("SELECT name FROM curators ORDER BY id DESC")
+# rows=c.fetchall() #get all remaining rows in a list
+# print(rows[0])
+# print(rows[1])
+# print(rows[2])
 
-rows=c.fetchall() #get all remaining rows in a list
-print(rows[0])
-print(rows[1])
-print(rows[2])
-print(rows[3])
+#learn different kind of join, right and outer join not support in sqlite
+#c.execute("SELECT c.name, e.name FROM curators c JOIN exhibits e ON c.id=e.curator_id")
+c.execute("SELECT c.name, e.name FROM curators c LEFT JOIN exhibits e ON c.id=e.curator_id")
+rows=c.fetchall()
+print(rows)
+
+
 
 conn.commit() #commit to submit current change
 conn.close()
